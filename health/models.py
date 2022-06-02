@@ -1,4 +1,5 @@
 from datetime import datetime
+from xml.parsers.expat import model
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
@@ -34,6 +35,17 @@ class Trackweight(models.Model):
     current_weight=models.FloatField()
     user=models.ForeignKey(Profile,on_delete=models.CASCADE)
     timestamp=models.DateTimeField()
+
+class symptoms(models.Model):
+    symptom_name=models.CharField(max_length=100,null=False)
+    symptom_desc=models.CharField(max_length=500,null=True)
+
+class Usersymptoms(models.Model):
+    check_up_id=models.CharField(max_length=20,null=False)
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    my_symptoms=models.ManyToManyField(symptoms)
+    timestamp=models.TimeField(default=datetime.now)
+
 
 
     
