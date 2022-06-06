@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .utilis import get_intent,symptoms,predict_disease,precautionDictionary,description
 from healthApp.randgenerator import rand
 from .models import Usersymptoms,symptoms as Symptoms
+
 # Create your views here.
 def chat_bot(request):
     return render(request,'chat-bot.html')
