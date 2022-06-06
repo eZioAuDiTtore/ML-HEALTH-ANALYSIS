@@ -11,9 +11,10 @@ def registerPage(request):
         if form.is_valid():
             form.save()
     context={'form': form}
-    return render(request,'register.html',context)
+    return render(request,'login.html',context)
 
 def loginpage(request):
     context={}
     return render(request,'Acoounts/login.html',context)
+
 
