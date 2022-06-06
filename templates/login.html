@@ -1,9 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
    <head>
       <meta charset="utf-8">
       <title>Login and Registration Form in HTML | CodingNepal</title>
-      <link rel="stylesheet" href="login.css">
+      <link rel="stylesheet" href="{% static 'styles/login.css'%}">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
    </head>
    <body>
@@ -35,6 +36,7 @@
                   <div class="pass-link">
                      <a href="#">Forgot password?</a>
                   </div>
+                  
                   <div class="field btn">
                      <div class="btn-layer"></div>
                      <input type="submit" value="Login">
@@ -44,8 +46,9 @@
                   </div>
                </form>
                <form action="#" class="signup">
+                  
                   <div class="field">
-                     <input type="text" placeholder="Email Address" required>
+                     {{ form.username }}
                   </div>
                   <div class="field">
                      <input type="password" placeholder="Password" required>
