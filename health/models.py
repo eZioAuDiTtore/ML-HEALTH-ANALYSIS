@@ -40,6 +40,9 @@ class symptoms(models.Model):
     symptom_name=models.CharField(max_length=100,null=False)
     symptom_desc=models.CharField(max_length=500,null=True)
 
+    def __str__(self):
+        return self.symptom_name
+
 class Usersymptoms(models.Model):
     check_up_id=models.CharField(max_length=20,null=False)
     user=models.ForeignKey(User,on_delete=models.CASCADE)

@@ -6,5 +6,8 @@ from .models import symptoms,Usersymptoms
 class symptomsad(admin.ModelAdmin):
     list_display = ('pk','symptom_name')
 
+class usersymp_ad(admin.ModelAdmin):
+    list_display=('pk','check_up_id','user')
+
 admin.site.register(symptoms,symptomsad)
-admin.site.register(Usersymptoms)
+admin.site.register(Usersymptoms,usersymp_ad)

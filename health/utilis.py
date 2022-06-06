@@ -39,9 +39,14 @@ def get_intent(text):
         for intent in intents:
             #print(intent)
             if word in intents[intent]:
-                print(intent)
                 real_intent = intent
                 return real_intent
+            elif intent == "ask_symptoms":
+                for each_symp in intents[intent]:
+                    splitted_symptoms=each_symp.split()
+                    if word in splitted_symptoms:
+                        real_intent = intent
+                        return real_intent
 
 
 
