@@ -1,4 +1,5 @@
 from multiprocessing import context
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm 
 from .forms import CreateUserForm
@@ -17,4 +18,7 @@ def loginpage(request):
     context={}
     return render(request,'Acoounts/login.html',context)
 
+def user_logout(request):
+    context={}
+    return HttpResponse("Logout successfull")
 
