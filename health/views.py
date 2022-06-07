@@ -16,7 +16,7 @@ def chat_bot(request):
 
 def home(request):
     content={"name":"devu","symptoms":symptoms}
-    return render(request, 'home.html',content)
+    return render(request, 'index.html',content)
     #return HttpResponse('<h1>hello</h1>')
 
 def get_response(request,intent,session):
