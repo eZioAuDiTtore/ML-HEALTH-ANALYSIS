@@ -1,11 +1,8 @@
 from ast import Return
 from multiprocessing import context
-<<<<<<< HEAD
 from django.http import HttpResponse
 from django.shortcuts import render
-=======
 from django.shortcuts import render,redirect
->>>>>>> 713f9bbb1c3e27f860cddb7fc6b7cc95313c1f1b
 from django.contrib.auth.forms import UserCreationForm 
 from .forms import CreateUserForm
 from django.http import HttpResponse,Http404
@@ -51,6 +48,6 @@ def loginpage(request):
 
 
 def user_logout(request):
-    context={}
+    context={} 
     return HttpResponse("Logout successfull")
 
