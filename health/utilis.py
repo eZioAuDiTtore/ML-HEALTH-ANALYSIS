@@ -5,6 +5,7 @@ from pathlib import Path
 import csv
 import pickle
 from .models import symptoms as Symptoms
+import numpy as np
 BASE_DIR = Path(__file__).resolve().parent.parent
 test_data = pd.read_csv(str(BASE_DIR)+'/ml/Testing.csv', sep=',')
 test_data = test_data.drop('prognosis', axis=1)
@@ -31,7 +32,7 @@ with open(str(BASE_DIR)+'/ml/symptom_precaution.csv', encoding="utf8") as csv_fi
         precautionDictionary.update(_prec)
 #print(precautionDictionary)
 def get_intent(text):
-    intents = {"greeting": ["hi", "hello", "hey", "symptoms"], "ask_symptoms": symptoms, "ask_symptoms-no": ["no","No"], "end-chat": ["bye", "thanks", "thankyou", "fine", "okay","ok"]}
+    intents = {"greeting": ["hi", "hello", "hey", "symptoms"], "ask_symptoms": symptoms, "ask_symptoms-no": ["no","No"], "end-chat": ["bye", "thanks", "thankyou", "fine", "okay","ok","thank you"]}
     words = text.lower().split(" ")
     #print(words)
     real_intent = ''
@@ -49,7 +50,10 @@ def get_intent(text):
                         return real_intent
 
 
-
+def predict_disease(affected_symps):
+    disease = model.predict([np.array(affected_symps)])
+    disease = disease[0]
+    return disease
 #updated symptoms to db
 '''
 def update_symptoms(request):
