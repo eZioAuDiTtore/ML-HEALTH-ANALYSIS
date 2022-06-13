@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mentalHealth',
     'health',
-    'Accounts'
+    'Accounts',
+    'django_truncate'
 
 ]
 

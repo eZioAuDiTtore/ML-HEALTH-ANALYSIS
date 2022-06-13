@@ -22,8 +22,11 @@ class Profile(models.Model):
     dinner=models.TimeField()
     blood_grp=models.CharField(max_length=10)
 
-#class Diseases(models.Model):
-    
+#class Doctor(models.Model):
+#class Checkup
+#class disease
+#class mental_health
+
 class Medicines(models.Model):
     intake_user=models.ForeignKey(Profile,on_delete=models.CASCADE)
     medicine_name = models.CharField(max_length=100)
