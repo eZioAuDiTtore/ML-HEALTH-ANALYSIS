@@ -30,6 +30,7 @@ def registerPage(request):
             return FormRender(request)
     return Http404()
 
+
 def loginpage(request):
     if request.POST:
         user_name=request.POST["username"]
@@ -41,6 +42,7 @@ def loginpage(request):
         else:
             messages.error(request,f"Invalid Credentials")
             return redirect('login-register')
+
 
 
 
