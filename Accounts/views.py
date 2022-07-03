@@ -8,6 +8,8 @@ from .forms import CreateUserForm
 from django.http import HttpResponse,Http404
 from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
+from health.forms import Patientform,Doctorform
+
 # Create your views here.
 
 def FormRender(request):
@@ -15,7 +17,6 @@ def FormRender(request):
     context={}
     form=CreateUserForm()
     if request.POST:
-        print("you")
         form=CreateUserForm(request.POST)
         
     context={'form': form}
@@ -27,7 +28,7 @@ def registerPage(request):
         if form.is_valid():
             form.save()
             print("test1")
-            return HttpResponse('success')
+            return redirect('registration')
         else:
             return FormRender(request)
     return Http404()
@@ -40,14 +41,56 @@ def loginpage(request):
         user=authenticate(request,username=user_name,password=pass_word)
         if user is not None:
             login(request,user)
-            return HttpResponse(f'logged in as {user_name}')
+            if 'next' in request.POST:
+                return redirect(request.POST['next'])
+            messages.success(request,f'logged in as {user_name}')
+            return redirect('home')
         else:
             messages.error(request,f"Invalid Credentials")
             return redirect('login-register')
 
 
 
+
 def user_logout(request):
     context={} 
-    return HttpResponse("Logout successfull")
+    logout(request)
+    messages.success(request,f"Logout successfull")
+    return redirect('home')
+
+
+
+def form_view(request):
+    context={}
+    context={'pform':Patientform(),'dform':Doctorform()}
+    return render(request,'pseudo-form.html',context)
+
+
+
+def Doctorregister(request):
+    if request.method == 'POST':
+        form = Doctorform(request.POST)
+        if form.is_valid():
+            form.save()
+            print("test1")
+            return HttpResponse('success')
+        else:
+            return FormRender(request)
+    return Http404()
+
+
+
+
+def Patientregister(request):
+    if request.method == 'POST':
+        form = Patientform(request.POST)
+        if form.is_valid():
+            form.save()
+            print("test1")
+            return HttpResponse('success')
+        else:
+            return FormRender(request)
+    return Http404()
+
+
 

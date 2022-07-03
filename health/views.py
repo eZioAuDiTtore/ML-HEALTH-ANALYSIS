@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from ast import Return
 from asyncio.windows_events import NULL
 from cgitb import text
@@ -9,14 +10,17 @@ from django.views.decorators.csrf import csrf_exempt
 from .utilis import get_intent,symptoms,predict_disease,precautionDictionary,description
 from healthApp.randgenerator import rand
 from .models import Usersymptoms,symptoms as Symptoms
-from.forms import Patientform
+
+
 # Create your views here.
+
+@login_required
 def chat_bot(request):
     return render(request,'chat-bot.html')
 
 def home(request):
     content={"name":"devu","symptoms":symptoms}
-    return render(request, 'index.html',content)
+    return render(request, 'healthica/homepage.html',content)
     #return HttpResponse('<h1>hello</h1>')
 
 def get_response(request,intent,session):
@@ -39,13 +43,16 @@ def get_response(request,intent,session):
         response = "Enter one more symptom beside {}. (Enter 'No' if not)".format(session["message"])
     elif intent == "ask_symptoms-no":
         affected_symtoms=[]
+        final_symptoms=[]
         for i in range(len(symptoms)):
             affected_symtoms.append(0)
         for i in range(user_symptoms.my_symptoms.count()):
             print(user_symptoms.my_symptoms.all()[1])
             affected_symtoms[symptoms.index(user_symptoms.my_symptoms.all()[i].symptom_name)]=1
-        disease=predict_disease(affected_symtoms)
-        print(affected_symtoms)
+            final_symptoms.append(
+                user_symptoms.my_symptoms.all()[i].symptom_name)
+        disease=predict_disease(affected_symtoms,final_symptoms)
+        print(affected_symtoms,final_symptoms)
         response=["disease","You may have {} disease".format(disease),disease]
 
     elif intent == "end-chat":
@@ -62,13 +69,7 @@ def predict(request):
     intent=get_intent(msg)
     res,checkupid=get_response(request,intent,text)
     if(res[0]=="disease"):
-        message = {"reply": res[1], "checkup_ID": checkupid,"desc":description[res[2]],"prec":precautionDictionary[res[2]]}
+        message = {"reply": res[1], "checkup_ID": checkupid}
     else:
         message={"reply":res,"checkup_ID":checkupid}
     return HttpResponse(json.dumps(message), content_type='application/json')
-
-
-def form_view(request):
-    context={}
-    context['form']=Patientform()
-    return render(request,'formview.html',context)
