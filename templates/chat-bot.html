@@ -1,13 +1,8 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+{%extends 'search.html'%}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Chatbot</title>
-</head>
-<body>
+{% load static %}
+
+{%block bot%}
 <div class="container">
     <div class="chatbox">
         <div class="chatbox__support">
@@ -29,13 +24,8 @@
             </div>
         </div>
         <div class="chatbox__button">
-            <button><img src="{% static 'images/chatbox-icon.svg' %}" /></button>
+            <button><img src="{% static 'media/chatbox-icon.svg' %}" /></button>
         </div>
     </div>
 </div>
-
-    
-    <script type="text/javascript" src="{% static 'js/app.js' %}"></script>
-
-</body>
-</html>
+{%endblock%}

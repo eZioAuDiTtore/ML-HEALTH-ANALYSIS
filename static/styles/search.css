@@ -19,7 +19,10 @@ body {
 
 .wrapper {
   max-width: 450px;
-  margin: 150px auto;
+  margin-left: 500px;
+  margin-top: 150px;
+  /*margin: 150px auto;*/
+ 
 }
 
 .wrapper .search-input {

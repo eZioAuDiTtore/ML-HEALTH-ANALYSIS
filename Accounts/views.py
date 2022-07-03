@@ -15,7 +15,6 @@ def FormRender(request):
     context={}
     form=CreateUserForm()
     if request.POST:
-        print("you")
         form=CreateUserForm(request.POST)
         
     context={'form': form}
@@ -40,7 +39,10 @@ def loginpage(request):
         user=authenticate(request,username=user_name,password=pass_word)
         if user is not None:
             login(request,user)
-            return HttpResponse(f'logged in as {user_name}')
+            if 'next' in request.POST:
+                return redirect(request.POST['next'])
+            messages.success(request,f'logged in as {user_name}')
+            return redirect('home')
         else:
             messages.error(request,f"Invalid Credentials")
             return redirect('login-register')
@@ -49,5 +51,7 @@ def loginpage(request):
 
 def user_logout(request):
     context={} 
-    return HttpResponse("Logout successfull")
+    logout(request)
+    messages.success(request,f"Logout successfull")
+    return redirect('home')
 

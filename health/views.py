@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from ast import Return
 from asyncio.windows_events import NULL
 from cgitb import text
@@ -11,12 +12,14 @@ from healthApp.randgenerator import rand
 from .models import Usersymptoms,symptoms as Symptoms
 from.forms import Patientform
 # Create your views here.
+
+@login_required
 def chat_bot(request):
     return render(request,'chat-bot.html')
 
 def home(request):
     content={"name":"devu","symptoms":symptoms}
-    return render(request, 'index.html',content)
+    return render(request, 'healthica/homepage.html',content)
     #return HttpResponse('<h1>hello</h1>')
 
 def get_response(request,intent,session):
