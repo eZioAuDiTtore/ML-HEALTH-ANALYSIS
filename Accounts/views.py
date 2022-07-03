@@ -8,6 +8,8 @@ from .forms import CreateUserForm
 from django.http import HttpResponse,Http404
 from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
+from health.forms import Patientform,Doctorform
+
 # Create your views here.
 
 def FormRender(request):
@@ -26,7 +28,7 @@ def registerPage(request):
         if form.is_valid():
             form.save()
             print("test1")
-            return HttpResponse('success')
+            return redirect('registration')
         else:
             return FormRender(request)
     return Http404()
@@ -49,9 +51,46 @@ def loginpage(request):
 
 
 
+
 def user_logout(request):
     context={} 
     logout(request)
     messages.success(request,f"Logout successfull")
     return redirect('home')
+
+
+
+def form_view(request):
+    context={}
+    context={'pform':Patientform(),'dform':Doctorform()}
+    return render(request,'pseudo-form.html',context)
+
+
+
+def Doctorregister(request):
+    if request.method == 'POST':
+        form = Doctorform(request.POST)
+        if form.is_valid():
+            form.save()
+            print("test1")
+            return HttpResponse('success')
+        else:
+            return FormRender(request)
+    return Http404()
+
+
+
+
+def Patientregister(request):
+    if request.method == 'POST':
+        form = Patientform(request.POST)
+        if form.is_valid():
+            form.save()
+            print("test1")
+            return HttpResponse('success')
+        else:
+            return FormRender(request)
+    return Http404()
+
+
 
