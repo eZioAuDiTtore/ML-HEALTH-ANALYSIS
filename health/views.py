@@ -10,7 +10,8 @@ from django.views.decorators.csrf import csrf_exempt
 from .utilis import get_intent,symptoms,predict_disease,precautionDictionary,description
 from healthApp.randgenerator import rand
 from .models import Usersymptoms,symptoms as Symptoms
-from.forms import Patientform
+
+
 # Create your views here.
 
 @login_required
@@ -72,9 +73,3 @@ def predict(request):
     else:
         message={"reply":res,"checkup_ID":checkupid}
     return HttpResponse(json.dumps(message), content_type='application/json')
-
-
-def form_view(request):
-    context={}
-    context['form']=Patientform()
-    return render(request,'formview.html',context)
