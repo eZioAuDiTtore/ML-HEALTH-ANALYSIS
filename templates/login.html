@@ -37,7 +37,9 @@
                   <div class="pass-link">
                      <a href="#">Forgot password?</a>
                   </div>
-                  
+                  {%if request.GET.next%}
+                  <input type="hidden" name="next" value="{{request.GET.next}}">
+                  {%endif%}
                   <div class="field btn">
                      <div class="btn-layer"></div>
                      <input type="submit" value="Login">

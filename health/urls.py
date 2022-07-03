@@ -1,5 +1,8 @@
 from django.urls import path
 from . import views
+
+#from .utilis import update_symptoms
+
 urlpatterns = [
     path('chat-bot', views.chat_bot, name='chat_bot'),
     path('predict', views.predict, name='predict'),
