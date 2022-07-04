@@ -18,6 +18,7 @@ html,body{
 }
 .wrapper{
   overflow: hidden;
+  margin-top: 200px;
   max-width: 390px;
   background: #fff;
   padding: 30px;
