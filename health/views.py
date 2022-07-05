@@ -1,3 +1,6 @@
+from cmath import e
+from errno import EEXIST
+from unicodedata import name
 from django.contrib.auth.decorators import login_required
 from ast import Return
 from asyncio.windows_events import NULL
@@ -7,10 +10,11 @@ import json
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from .utilis import get_intent,symptoms,predict_disease,precautionDictionary,description
+from .utilis import get_intent,symptoms,predict_disease,precautionDictionary,description, predict_diabetes
 from healthApp.randgenerator import rand
 from .models import Usersymptoms,symptoms as Symptoms
-
+import pickle
+#from .models import predict_diabetes
 
 # Create your views here.
 
@@ -73,3 +77,34 @@ def predict(request):
     else:
         message={"reply":res,"checkup_ID":checkupid}
     return HttpResponse(json.dumps(message), content_type='application/json')
+
+
+
+
+def diabetes_view(request):
+    return render(request, 'diabeticform.html')
+
+def diabetes(request):
+    if request.method=="POST":
+        Glucoselevel=request.POST.get('Glucose Level')
+        Insulin=request.POST.get('Insulin')
+        bmi=request.POST.get('BMI')
+        DiabetesPF=request.POST.get('Diabetes PF')
+        Age=request.POST.get('Age')
+        r=predict_diabetes(request)#)
+        return r
+        #en.save()
+        #return render(request,'result.html')
+    
+
+
+
+
+
+
+
+
+
+
+
+
