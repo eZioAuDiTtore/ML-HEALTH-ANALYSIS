@@ -8,7 +8,6 @@ body {
     font-family: 'Nunito', sans-serif;
     font-weight: 400;
     font-size: 100%;
-    background: #F1F1F1;
 }
 
 *, html {
@@ -23,8 +22,8 @@ body {
 =============== */
 .chatbox {
     position: absolute;
-    bottom: 30px;
-    right: 30px;
+    bottom: 20px;
+    left: 20px;
 }
 
 /* CONTENT IS CLOSE */
@@ -49,7 +48,7 @@ body {
 
 /* BUTTON */
 .chatbox__button {
-    text-align: right;
+    text-align: left;
 }
 
 .send__button {
@@ -98,11 +97,10 @@ body {
 
 .chatbox__support {
     background: #f9f9f9;
-    height: 450px;
-    width: 350px;
+    height: 490px;
+    width: 410px;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+    border-radius: 20px;
 }
 
 /* HEADER */
@@ -194,10 +192,84 @@ body {
     outline: none;
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
-    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
     box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
 .errorlist{
     list-style-type: none;
+}
+
+/*Typing*/
+.chat-bubble {
+    background-color: #E0E0E0;
+    padding: 16px 28px;
+    margin-top: 20px;
+    -webkit-border-radius: 20px;
+    -webkit-border-bottom-left-radius: 2px;
+    -moz-border-radius: 20px;
+    -moz-border-radius-bottomleft: 2px;
+    border-radius: 20px;
+    border-bottom-left-radius: 2px;
+    display:inline-block;
+    width: 90px;
+}
+
+.typing {
+    align-items: center;
+    display: flex;
+    height: 17px;
+}
+
+.typing .dot {
+    animation: mercuryTypingAnimation 1.8s infinite ease-in-out;
+    background-color: #000000;
+    border-radius: 50%;
+    height: 7px;
+    margin-right: 4px;
+    vertical-align: middle;
+    width: 7px;
+    display: inline-block;
+}
+
+.typing .dot:nth-child(1) {
+    animation-delay: 200ms;
+}
+
+.typing .dot:nth-child(2) {
+    animation-delay: 300ms;
+}
+
+.typing .dot:nth-child(3) {
+    animation-delay: 400ms;
+}
+
+.typing .dot:last-child {
+    margin-right: 0;
+}
+
+@keyframes mercuryTypingAnimation {
+    0% {
+        transform: translateY(0px);
+        background-color: #3c3c3c; 
+    }
+
+    28% {
+        transform: translateY(-7px);
+        background-color: #656565; 
+    }
+
+    44% {
+        transform: translateY(0px);
+        background-color: #a7a7a7; 
+    }
+}
+@media only screen and (max-width: 600px) {
+    .chatbox{
+        width: 90%;
+        left:auto;
+    }
+    .chatbox__support {
+        width: 100%;
+    }
 }

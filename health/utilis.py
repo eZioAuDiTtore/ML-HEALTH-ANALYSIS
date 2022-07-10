@@ -6,15 +6,22 @@ import csv
 import pickle
 from .models import symptoms as Symptoms
 import numpy as np
+from statistics import mean
+from django.shortcuts import render
 BASE_DIR = Path(__file__).resolve().parent.parent
-test_data = pd.read_csv(str(BASE_DIR)+'/ml/Testing.csv', sep=',')
-test_data = test_data.drop('prognosis', axis=1)
-symptoms = list(test_data.columns)
+df_norm = pd.read_csv(str(BASE_DIR)+'\ml\dataset\dis_sym_dataset_norm.csv', sep=',')
+#test_data = df_norm.drop('prognosis', axis=1)
+with open(str(BASE_DIR)+"/ml/dataset/symptoms.pkl", "rb") as fp:
+    symptoms = pickle.load(fp)
+with open(str(BASE_DIR)+"\ml\dataset\list_diseaseNames.pkl", "rb") as fp:
+    diseases = pickle.load(fp)
 fields = []
 description = {}
 precautionDictionary = {}
-model = pickle.load(open(str(BASE_DIR)+'/ml/model.pkl', 'rb'))
-
+#ml models
+model = pickle.load(open(str(BASE_DIR)+'/ml/symptoms_model(92.31).pkl', 'rb'))
+diabetes_mod=pickle.load(open(str(BASE_DIR)+'/ml/classifier.pkl','rb'))
+sc=pickle.load(open(str(BASE_DIR)+'/ml/sc.pkl','rb'))
 with open(str(BASE_DIR)+'/ml/disease_description.csv', encoding="utf8") as csvfile:
     csvreader = csv.reader(csvfile)
     fields = next(csvreader)
@@ -50,14 +57,59 @@ def get_intent(text):
                         return real_intent
 
 
-def predict_disease(affected_symps):
-    disease = model.predict([np.array(affected_symps)])
-    disease = disease[0]
-    return disease
-#updated symptoms to db
-'''
-def update_symptoms(request):
-    for symptom in symptoms:
-        Symptoms(symptom_name=symptom,symptom_desc="").save()
+def predict_disease(affected_symps,final_symp):
+    prediction = model.predict_proba([affected_symps])
+    k = 10
+    #diseases = list(set(Y['label_dis']))
+    diseases.sort()
+    scores = [0.78213922,0.87945671,0.92473118,0.94793435,0.97792869]
+    final_symp=set(final_symp)
+    topk = prediction[0].argsort()[-k:][::-1]
+    print(f"\nTop {k} diseases predicted based on symptoms")
+    topk_dict = {}
+    # Show top 10 highly probable disease to the user.
+    for idx, t in enumerate(topk):
+        match_sym = set()
+        row = df_norm.loc[df_norm['label_dis'] == diseases[t]].values.tolist()
+        row[0].pop(0)
 
-'''
+        for idx, val in enumerate(row[0]):
+            if val != 0:
+                match_sym.add(symptoms[idx])
+        prob = (len(match_sym.intersection(set(final_symp)))+1) / \
+            (len(set(final_symp))+1)
+        prob *= mean(scores)
+        topk_dict[t] = prob
+    j = 0
+    topk_index_mapping = {}
+    probab_diseases=[]
+    topk_sorted = dict(
+        sorted(topk_dict.items(), key=lambda kv: kv[1], reverse=True))
+    for key in topk_sorted:
+        prob = topk_sorted[key]*100
+        print(str(j) + " Disease name:",
+                diseases[key], "\tProbability:", str(round(prob, 2))+"%")
+        probab_diseases.append(diseases[key])
+        topk_index_mapping[j] = key
+        j += 1
+    return probab_diseases
+#updated symptoms to db
+
+'''def update_symptoms(request):
+    for symptom in symptoms:
+        Symptoms(symptom_name=str(symptom),symptom_desc="").save()'''
+
+
+
+
+
+def predict_diabetes(request):
+    float_features = [
+        float(x) for key, x in request.POST.items() if key != "csrfmiddlewaretoken"]
+    final_features = [np.array(float_features)]
+    print(sc.transform(final_features))
+    pred = diabetes_mod.predict( sc.transform(final_features) )
+    return render (request,"result.html",{'prediction':pred})
+
+
+    
